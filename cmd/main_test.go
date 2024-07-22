@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"flag"
-	"go-s3-upload-rest/server"
 	"io"
 	"log"
 	"mime/multipart"
@@ -14,6 +13,8 @@ import (
 	"strconv"
 	"testing"
 	"time"
+
+	"github.com/WhiteRiverBay/go-s3-upload-rest/server"
 )
 
 func TestMain(m *testing.M) {
@@ -25,9 +26,13 @@ func TestMain(m *testing.M) {
 	secretAccessKey := flag.String("secret", "test-secret", "AWS secret access key")
 	width := flag.Int("width", 300, "Image width")
 	height := flag.Int("height", 300, "Image height")
+	bind := flag.String("bind", ":9090", "Server bind address")
+
+	dailyLimit := flag.Int("daily", 10, "Daily limit")
+	minuteLimit := flag.Int("minute", 2, "Minute limit")
 
 	flag.Parse()
-	go server.StartServer(*bucket, *region, *accessKeyID, *secretAccessKey, *width, *height)
+	go server.StartServer(*bucket, *region, *accessKeyID, *secretAccessKey, *width, *height, *bind, *dailyLimit, *minuteLimit)
 
 	// sleep 5
 	time.Sleep(5 * time.Second)

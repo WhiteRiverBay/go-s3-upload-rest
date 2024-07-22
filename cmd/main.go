@@ -2,8 +2,9 @@ package main
 
 import (
 	"flag"
-	"go-s3-upload-rest/server"
 	"log"
+
+	"github.com/WhiteRiverBay/go-s3-upload-rest/server"
 )
 
 func main() {
@@ -13,6 +14,10 @@ func main() {
 	secretAccessKey := flag.String("secret", "", "AWS secret access key")
 	width := flag.Int("width", 300, "Image width")
 	height := flag.Int("height", 300, "Image height")
+	bind := flag.String("bind", ":9090", "Server bind address")
+	dailyLimit := flag.Int("daily", 10, "Daily limit")
+	minuteLimit := flag.Int("minute", 2, "Minute limit")
+
 	flag.Parse()
 
 	if *bucket == "" || *region == "" || *accessKeyID == "" || *secretAccessKey == "" {
@@ -21,5 +26,5 @@ func main() {
 
 	// show start text in console
 	log.Println("Starting server on :9090")
-	server.StartServer(*bucket, *region, *accessKeyID, *secretAccessKey, *width, *height)
+	server.StartServer(*bucket, *region, *accessKeyID, *secretAccessKey, *width, *height, *bind, *dailyLimit, *minuteLimit)
 }

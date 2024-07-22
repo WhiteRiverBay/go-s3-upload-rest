@@ -9,17 +9,21 @@ import (
 	"strings"
 	"time"
 
-	"go-s3-upload-rest/util"
+	"github.com/WhiteRiverBay/go-s3-upload-rest/util"
 
 	"github.com/google/uuid"
 )
 
-func StartServer(bucket string, region string, accessKeyID string, secretAccessKey string, height int, width int) {
+func StartServer(bucket string,
+	region string,
+	accessKeyID string,
+	secretAccessKey string, height int, width int, bind string,
+	dailyLimit int, minuteLimit int) {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Hello, world!"))
 	})
 
-	rl := util.NewRateLimiter()
+	rl := util.NewRateLimiter(dailyLimit, minuteLimit)
 
 	// upload file
 	http.HandleFunc("/upload", func(w http.ResponseWriter, r *http.Request) {
@@ -109,5 +113,5 @@ func StartServer(bucket string, region string, accessKeyID string, secretAccessK
 		}
 	})
 
-	http.ListenAndServe(":9090", nil)
+	http.ListenAndServe(bind, nil)
 }

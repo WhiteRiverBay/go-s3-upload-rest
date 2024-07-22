@@ -1,4 +1,4 @@
-module go-s3-upload-rest
+module github.com/WhiteRiverBay/go-s3-upload-rest
 
 go 1.22.2
 

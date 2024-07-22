@@ -19,13 +19,15 @@ type RateLimiter struct {
 	clients map[string]*ClientLimiter
 }
 
-const (
+var (
 	minuteLimit = 2
 	dailyLimit  = 10
 )
 
 // NewRateLimiter initializes a new RateLimiter
-func NewRateLimiter() *RateLimiter {
+func NewRateLimiter(ml int, dl int) *RateLimiter {
+	minuteLimit = ml
+	dailyLimit = dl
 	return &RateLimiter{
 		clients: make(map[string]*ClientLimiter),
 	}
