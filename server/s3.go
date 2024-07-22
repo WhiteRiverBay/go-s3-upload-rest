@@ -1,6 +1,7 @@
 package server
 
 import (
+	"io"
 	"log"
 	"mime/multipart"
 
@@ -31,8 +32,8 @@ func NewS3Uploader(bucket string, region string, accessKeyID string, secretAcces
 }
 
 // UploadFile uploads a file to S3
-func (u *S3Uploader) UploadFile(file multipart.File, fileHeader *multipart.FileHeader) error {
-	defer file.Close()
+func (u *S3Uploader) UploadFile(file io.ReadSeeker, fileHeader *multipart.FileHeader) error {
+	// defer file.Close()
 
 	_, err := u.s3Client.PutObject(&s3.PutObjectInput{
 		Bucket:        aws.String(u.bucket),

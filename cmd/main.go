@@ -11,6 +11,8 @@ func main() {
 	region := flag.String("region", "", "S3 region")
 	accessKeyID := flag.String("access", "", "AWS access key ID")
 	secretAccessKey := flag.String("secret", "", "AWS secret access key")
+	width := flag.Int("width", 300, "Image width")
+	height := flag.Int("height", 300, "Image height")
 	flag.Parse()
 
 	if *bucket == "" || *region == "" || *accessKeyID == "" || *secretAccessKey == "" {
@@ -19,5 +21,5 @@ func main() {
 
 	// show start text in console
 	log.Println("Starting server on :9090")
-	server.StartServer(*bucket, *region, *accessKeyID, *secretAccessKey)
+	server.StartServer(*bucket, *region, *accessKeyID, *secretAccessKey, *width, *height)
 }
