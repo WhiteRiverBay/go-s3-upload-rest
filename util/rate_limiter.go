@@ -1,6 +1,7 @@
 package util
 
 import (
+	"log"
 	"sync"
 	"time"
 
@@ -20,14 +21,16 @@ type RateLimiter struct {
 }
 
 var (
-	minuteLimit = 2
-	dailyLimit  = 10
+	minuteLimit = 3
+	dailyLimit  = 30
 )
 
 // NewRateLimiter initializes a new RateLimiter
 func NewRateLimiter(ml int, dl int) *RateLimiter {
 	minuteLimit = ml
 	dailyLimit = dl
+	// log info ml and dl
+	log.Printf("Minute limit: %d, Daily limit: %d", minuteLimit, dailyLimit)
 	return &RateLimiter{
 		clients: make(map[string]*ClientLimiter),
 	}
@@ -40,9 +43,11 @@ func (rl *RateLimiter) getClientLimiter(ip string) *ClientLimiter {
 
 	limiter, exists := rl.clients[ip]
 	if !exists {
+		minuteLimiter := rate.Every(time.Minute)
+		dailyLimiter := rate.Every(24 * time.Hour)
 		limiter = &ClientLimiter{
-			limiterMinute: rate.NewLimiter(rate.Every(time.Minute), minuteLimit),
-			limiterDaily:  rate.NewLimiter(rate.Every(24*time.Hour), dailyLimit),
+			limiterMinute: rate.NewLimiter(minuteLimiter, minuteLimit),
+			limiterDaily:  rate.NewLimiter(dailyLimiter, dailyLimit),
 		}
 		rl.clients[ip] = limiter
 	}

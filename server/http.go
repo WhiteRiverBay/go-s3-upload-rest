@@ -23,7 +23,7 @@ func StartServer(bucket string,
 		w.Write([]byte("Hello, world!"))
 	})
 
-	rl := util.NewRateLimiter(dailyLimit, minuteLimit)
+	rl := util.NewRateLimiter(minuteLimit, dailyLimit)
 
 	// upload file
 	http.HandleFunc("/upload", func(w http.ResponseWriter, r *http.Request) {
@@ -44,6 +44,8 @@ func StartServer(bucket string,
 
 			if !rl.Allow(ip) {
 				http.Error(w, "Rate limit exceeded", http.StatusTooManyRequests)
+				// log ip
+				log.Printf("Rate limit exceeded for IP: %s", ip)
 				return
 			}
 
@@ -79,7 +81,8 @@ func StartServer(bucket string,
 
 			uploadData = file
 			// resize image if it's larger than the specified dimensions
-			if rWidth > width || rHeight > height {
+			// gif ignore
+			if (rWidth > width || rHeight > height) && filepath.Ext(fileHeader.Filename) != ".gif" {
 				var contentLength int64
 				uploadData, contentLength, err = util.ResizeImage(file, width, height, filepath.Ext(fileHeader.Filename))
 				if err != nil {
