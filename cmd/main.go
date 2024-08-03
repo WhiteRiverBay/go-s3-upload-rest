@@ -15,8 +15,8 @@ func main() {
 	width := flag.Int("width", 300, "Image width")
 	height := flag.Int("height", 300, "Image height")
 	bind := flag.String("bind", ":9090", "Server bind address")
-	dailyLimit := flag.Int("daily", 10, "Daily limit")
-	minuteLimit := flag.Int("minute", 2, "Minute limit")
+	dailyLimit := flag.Int("daily", 30, "Daily limit")
+	minuteLimit := flag.Int("minute", 5, "Minute limit")
 
 	flag.Parse()
 

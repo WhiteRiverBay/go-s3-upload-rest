@@ -35,5 +35,5 @@ RUN rm -rf /go/src/app
 # Run the app
 ARG PORT=9090
 ARG HOST="0.0.0.0"
-CMD ["/go/bin/app", "-bind", "${HOST}:${PORT}" "-access", "${ACCESS_KEY}", "-secret", "${SECRET_KEY}", "-region", "${REGION}", "-bucket", "${BUCKET}", "-daily", "10", "-minute", "2"]
+CMD ["/go/bin/app", "-bind", "${HOST}:${PORT}" "-access", "${ACCESS_KEY}", "-secret", "${SECRET_KEY}", "-region", "${REGION}", "-bucket", "${BUCKET}", "-daily", "20", "-minute", "2"]
 EXPOSE ${PORT}
